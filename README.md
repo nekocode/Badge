@@ -20,8 +20,10 @@ dependencies {
 ```
 
 ### Usage
-The blow screenshot's example, you can use `toSpannable()` for converting the drawable to SpannableString without setting its drawing bounds. It have already token internal measure:
-``` Java
+
+The blow screenshot's example:
+
+```java
 final BadgeDrawable drawable = new BadgeDrawable();
 drawable.setBadgeType(BadgeDrawable.TYPE_NUMBER);
 drawable.setNumber(9);
@@ -42,7 +44,11 @@ drawable4.setBadgeType(BadgeDrawable.TYPE_NUMBER);
 drawable4.setNumber(999);
 drawable4.setBadgeColor(0xff666666);
 drawable4.setTextColor(0xffFFFF00);
+```
 
+The `drawable4` set a number that too large to show, in this case, it will be replaced with **...** for showing. And then we can use `toSpannable()` for converting the drawable to SpannableString without setting its drawing bounds. It has already took internal measure.
+
+```java
 SpannableString spannableString =
         new SpannableString(TextUtils.concat(
                 "TextView ",
@@ -56,7 +62,11 @@ SpannableString spannableString =
         ));
 
 textView.setText(spannableString);
+```
 
+We can also use the badge drawable for ImageView:
+
+```
 final BadgeDrawable drawable5 = new BadgeDrawable();
 drawable5.setBadgeType(BadgeDrawable.TYPE_WITH_TWO_TEXT);
 drawable5.setTextSize(sp2px(this, 14));
