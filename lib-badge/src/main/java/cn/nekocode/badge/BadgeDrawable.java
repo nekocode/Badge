@@ -45,9 +45,56 @@ public class BadgeDrawable extends Drawable {
     private Paint paint;
     private Paint.FontMetrics fontMetrics;
 
-    private boolean willNotSetBounds = false;
+    private boolean needSetBounds = false;
 
-    public BadgeDrawable() {
+    public static class Builder {
+        private BadgeDrawable badgeDrawable;
+
+        public Builder() {
+            badgeDrawable = new BadgeDrawable();
+        }
+
+        public Builder type(int type) {
+            badgeDrawable.setBadgeType(type);
+            return this;
+        }
+
+        public Builder number(int number) {
+            badgeDrawable.setNumber(number);
+            return this;
+        }
+
+        public Builder text1(String text1) {
+            badgeDrawable.setText1(text1);
+            return this;
+        }
+
+        public Builder text2(String text2) {
+            badgeDrawable.setText2(text2);
+            return this;
+        }
+
+        public Builder badgeColor(int color) {
+            badgeDrawable.setBadgeColor(color);
+            return this;
+        }
+
+        public Builder textColor(int color) {
+            badgeDrawable.setTextColor(color);
+            return this;
+        }
+
+        public Builder textSize(float size) {
+            badgeDrawable.setTextSize(size);
+            return this;
+        }
+
+        public BadgeDrawable build() {
+            return badgeDrawable;
+        }
+    }
+
+    private BadgeDrawable() {
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setTypeface(Typeface.DEFAULT_BOLD);
@@ -88,8 +135,16 @@ public class BadgeDrawable extends Drawable {
         badgeColor = color;
     }
 
+    public int getBadgeColor() {
+        return badgeColor;
+    }
+
     public void setTextColor(int color) {
         textColor = color;
+    }
+
+    public int getTextColor() {
+        return textColor;
     }
 
     public void setTextSize(float textSize) {
@@ -100,8 +155,16 @@ public class BadgeDrawable extends Drawable {
         measureBadge();
     }
 
+    public float getTextSize() {
+        return textSize;
+    }
+
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public int getNumber() {
+        return number;
     }
 
     public void setText1(String text1) {
@@ -109,9 +172,21 @@ public class BadgeDrawable extends Drawable {
         measureBadge();
     }
 
+    public String getText1() {
+        return text1;
+    }
+
     public void setText2(String text2) {
         this.text2 = text2;
         measureBadge();
+    }
+
+    public String getText2() {
+        return text2;
+    }
+
+    public void setNeedSetBounds(boolean needSetBounds) {
+        this.needSetBounds = needSetBounds;
     }
 
     private void measureBadge() {
@@ -135,7 +210,7 @@ public class BadgeDrawable extends Drawable {
                 setCornerRadius(badgeHeight);
         }
 
-        if (willNotSetBounds)
+        if (needSetBounds)
             setBounds(0, 0, badgeWidth, badgeHeight);
     }
 
@@ -229,7 +304,7 @@ public class BadgeDrawable extends Drawable {
     public SpannableString toSpannable() {
         final SpannableString spanStr = new SpannableString(" ");
         spanStr.setSpan(new ImageSpan(this, ImageSpan.ALIGN_BOTTOM), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        willNotSetBounds = true;
+        needSetBounds = true;
         setBounds(0, 0, badgeWidth, badgeHeight);
 
         return spanStr;
