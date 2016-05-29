@@ -21,7 +21,7 @@ dependencies {
 
 ### Usage
 
-The blow screenshot's example:
+The above screenshot's example:
 
 ```java
 final BadgeDrawable drawable = new BadgeDrawable();
@@ -46,7 +46,7 @@ drawable4.setBadgeColor(0xff666666);
 drawable4.setTextColor(0xffFFFF00);
 ```
 
-The `drawable4` set a number that too large to show, in this case, it will be replaced with **...** for showing. And then we can use `toSpannable()` for converting the drawable to SpannableString without setting its drawing bounds. It has already took internal measure.
+The above `drawable4` BadgeDrawable has set a number that too large to show, in this case, it will be replaced with **"..."** for showing. And then you can use `toSpannable()` for converting the drawable to SpannableString without setting its drawing bounds. It has already took internal measure.
 
 ```java
 SpannableString spannableString =
@@ -64,7 +64,7 @@ SpannableString spannableString =
 textView.setText(spannableString);
 ```
 
-We can also use the badge drawable for ImageView:
+You can also use the badge drawable for ImageView:
 
 ```
 final BadgeDrawable drawable5 = new BadgeDrawable();
