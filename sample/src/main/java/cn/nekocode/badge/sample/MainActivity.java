@@ -19,34 +19,34 @@ public class MainActivity extends AppCompatActivity {
         final TextView textView = (TextView)findViewById(R.id.tvHelloWorld);
         final ImageView imageView = (ImageView)findViewById(R.id.imageView);
 
-        final BadgeDrawable drawable =
-                new BadgeDrawable.Builder()
-                        .type(BadgeDrawable.TYPE_NUMBER)
-                        .number(9)
-                        .build();
+final BadgeDrawable drawable =
+        new BadgeDrawable.Builder()
+                .type(BadgeDrawable.TYPE_NUMBER)
+                .number(9)
+                .build();
 
-        final BadgeDrawable drawable2 =
-                new BadgeDrawable.Builder()
-                        .type(BadgeDrawable.TYPE_ONLY_ONE_TEXT)
-                        .badgeColor(0xff336699)
-                        .text1("VIP")
-                        .build();
+final BadgeDrawable drawable2 =
+        new BadgeDrawable.Builder()
+                .type(BadgeDrawable.TYPE_ONLY_ONE_TEXT)
+                .badgeColor(0xff336699)
+                .text1("VIP")
+                .build();
 
-        final BadgeDrawable drawable3 =
-                new BadgeDrawable.Builder()
-                        .type(BadgeDrawable.TYPE_WITH_TWO_TEXT)
-                        .badgeColor(0xffCC9933)
-                        .text1("LEVEL")
-                        .text2("10")
-                        .build();
+final BadgeDrawable drawable3 =
+        new BadgeDrawable.Builder()
+                .type(BadgeDrawable.TYPE_WITH_TWO_TEXT)
+                .badgeColor(0xffCC9933)
+                .text1("LEVEL")
+                .text2("10")
+                .build();
 
-        final BadgeDrawable drawable4 =
-                new BadgeDrawable.Builder()
-                        .type(BadgeDrawable.TYPE_NUMBER)
-                        .number(999)
-                        .badgeColor(0xff666666)
-                        .textColor(0xffFFFF00)
-                        .build();
+final BadgeDrawable drawable4 =
+        new BadgeDrawable.Builder()
+                .type(BadgeDrawable.TYPE_NUMBER)
+                .number(999)
+                .badgeColor(0xff666666)
+                .textColor(0xffFFFF00)
+                .build();
 
         SpannableString spannableString =
                 new SpannableString(TextUtils.concat(
