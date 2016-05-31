@@ -45,7 +45,7 @@ public class BadgeDrawable extends Drawable {
     private Paint paint;
     private Paint.FontMetrics fontMetrics;
 
-    private boolean needSetBounds = false;
+    private boolean isAutoSetBounds = false;
 
     public static class Builder {
         private BadgeDrawable badgeDrawable;
@@ -185,23 +185,26 @@ public class BadgeDrawable extends Drawable {
         return text2;
     }
 
-    public void setNeedSetBounds(boolean needSetBounds) {
-        this.needSetBounds = needSetBounds;
+    public void setAutoSetBounds(boolean autoSetBounds) {
+        this.isAutoSetBounds = autoSetBounds;
     }
 
     private void measureBadge() {
         switch (badgeType) {
             case TYPE_ONLY_ONE_TEXT:
+                text1Width = (int) paint.measureText(text1);
                 badgeHeight = (int) (textSize * 1.4f);
-                badgeWidth = (int) (paint.measureText(text1) + textSize * 0.4f);
+                badgeWidth = (int) (text1Width + textSize * 0.4f);
+
                 setCornerRadius(DEFAULT_CORNER_RADIUS);
                 break;
 
             case TYPE_WITH_TWO_TEXT:
-                badgeHeight = (int) (textSize * 1.4f);
                 text1Width = (int) paint.measureText(text1);
                 text2Width = (int) paint.measureText(text2);
+                badgeHeight = (int) (textSize * 1.4f);
                 badgeWidth = (int) (text1Width + text2Width + textSize * 0.6f);
+
                 setCornerRadius(DEFAULT_CORNER_RADIUS);
                 break;
 
@@ -210,8 +213,36 @@ public class BadgeDrawable extends Drawable {
                 setCornerRadius(badgeHeight);
         }
 
-        if (needSetBounds)
+        if (isAutoSetBounds)
             setBounds(0, 0, badgeWidth, badgeHeight);
+    }
+
+    @Override
+    public void setBounds(int left, int top, int right, int bottom) {
+        super.setBounds(left, top, right, bottom);
+        if (isAutoSetBounds)
+            return;
+
+        int boundsWidth = right - left;
+        switch (badgeType) {
+            case TYPE_ONLY_ONE_TEXT:
+                if(!isAutoSetBounds && boundsWidth < badgeWidth) {
+                    text1Width = (int) (boundsWidth - textSize * 0.4f);
+                    text1Width = text1Width > 0 ? text1Width : 0;
+
+                    badgeWidth = (int) (text1Width + textSize * 0.4f);
+                }
+                break;
+
+            case TYPE_WITH_TWO_TEXT:
+                if(!isAutoSetBounds && boundsWidth < badgeWidth) {
+                    text2Width = (int) (boundsWidth - text1Width - textSize * 0.6f);
+                    text2Width = text2Width > 0 ? text2Width : 0;
+
+                    badgeWidth = (int) (text1Width + text2Width + textSize * 0.6f);
+                }
+                break;
+        }
     }
 
     @Override
@@ -237,7 +268,7 @@ public class BadgeDrawable extends Drawable {
             case TYPE_ONLY_ONE_TEXT:
                 paint.setColor(textColor);
                 canvas.drawText(
-                        text1,
+                        cutText(text1, text1Width),
                         textCx,
                         textCy + textCyOffset,
                         paint);
@@ -262,7 +293,7 @@ public class BadgeDrawable extends Drawable {
 
                 paint.setColor(badgeColor);
                 canvas.drawText(
-                        text2,
+                        cutText(text2, text2Width),
                         bounds.width() - marginLeftAndRight - text2Width / 2f - textSize * 0.2f,
                         textCy + textCyOffset,
                         paint);
@@ -301,10 +332,29 @@ public class BadgeDrawable extends Drawable {
         return "...";
     }
 
+    private String cutText(String text, int width) {
+        if (paint.measureText(text) <= width)
+            return text;
+
+        String suffix = "...";
+        while(paint.measureText(text + suffix) > width) {
+            if(text.length() > 0)
+                text = text.substring(0, text.length() - 1);
+
+            if(text.length() == 0) {
+                suffix = suffix.substring(0, suffix.length() - 1);
+
+                if(suffix.length() == 0) break;
+            }
+        }
+
+        return text + suffix;
+    }
+
     public SpannableString toSpannable() {
         final SpannableString spanStr = new SpannableString(" ");
         spanStr.setSpan(new ImageSpan(this, ImageSpan.ALIGN_BOTTOM), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        needSetBounds = true;
+        isAutoSetBounds = true;
         setBounds(0, 0, badgeWidth, badgeHeight);
 
         return spanStr;

@@ -72,4 +72,8 @@ SpannableString spannableString =
 textView.setText(spannableString);
 ```
 
+If the drawable's bounds was setted by manual or content view. It will auto cut the text to adjust the bounds' width.
+
+![](art/1.png)
+
 You can also use the badge drawable for ImageView and other more view.
