@@ -72,7 +72,7 @@ SpannableString spannableString =
 textView.setText(spannableString);
 ```
 
-If the drawable's bounds was setted by manual or content view. It will auto cut the text to adjust the bounds' width.
+If the drawable's bounds was setted by manual or content view. It will auto cut the text to adjust the bounds' width. Look like:
 
 ![](art/1.png)
 
