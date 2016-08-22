@@ -25,76 +25,83 @@ public class BadgeDrawable extends Drawable {
     private static final int DEFAULT_BADGE_COLOR = 0xffCC3333;
     private static final int DEFAULT_TEXT_COLOR = 0xffFFFFFF;
 
+    private static class Config {
+        private int badgeType = TYPE_NUMBER;
+        private float cornerRadius;
+        private int number = 0;
+        private String text1 = "";
+        private String text2 = "";
+        private int badgeColor = DEFAULT_BADGE_COLOR;
+        private int textColor = DEFAULT_TEXT_COLOR;
+        private float textSize = DEFAULT_TEXT_SIZE;
+
+    }
+    private Config config;
+
     private ShapeDrawable backgroundDrawable;
     private ShapeDrawable backgroundDrawableOfText2;
-    private int badgeType;
     private int badgeWidth;
     private int badgeHeight;
-    private float cornerRadius;
     private float[] outerR = new float[]{0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f};
     private float[] outerROfText2 = new float[]{0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f};
-
-    private int number = 0;
-    private String text1 = "";
-    private String text2 = "";
-    private int text1Width, text2Width;
-
-    private float textSize;
-    private int badgeColor;
-    private int textColor;
     private Paint paint;
     private Paint.FontMetrics fontMetrics;
-
+    private int text1Width, text2Width;
     private boolean isAutoSetBounds = false;
 
     public static class Builder {
-        private BadgeDrawable badgeDrawable;
+        private Config config;
 
         public Builder() {
-            badgeDrawable = new BadgeDrawable();
+            config = new Config();
         }
 
         public Builder type(int type) {
-            badgeDrawable.setBadgeType(type);
+            config.badgeType = type;
+            return this;
+        }
+
+        public Builder cornerRadius(float radius) {
+            config.cornerRadius = radius;
             return this;
         }
 
         public Builder number(int number) {
-            badgeDrawable.setNumber(number);
+            config.number = number;
             return this;
         }
 
         public Builder text1(String text1) {
-            badgeDrawable.setText1(text1);
+            config.text1 = text1;
             return this;
         }
 
         public Builder text2(String text2) {
-            badgeDrawable.setText2(text2);
+            config.text2 = text2;
             return this;
         }
 
         public Builder badgeColor(int color) {
-            badgeDrawable.setBadgeColor(color);
+            config.badgeColor = color;
             return this;
         }
 
         public Builder textColor(int color) {
-            badgeDrawable.setTextColor(color);
+            config.textColor = color;
             return this;
         }
 
         public Builder textSize(float size) {
-            badgeDrawable.setTextSize(size);
+            config.textSize = size;
             return this;
         }
 
         public BadgeDrawable build() {
-            return badgeDrawable;
+            return new BadgeDrawable(config);
         }
     }
 
-    private BadgeDrawable() {
+    private BadgeDrawable(Config config) {
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setTypeface(Typeface.DEFAULT_BOLD);
@@ -102,53 +109,53 @@ public class BadgeDrawable extends Drawable {
         paint.setStyle(Paint.Style.FILL);
         paint.setAlpha(255);
 
-        badgeType = TYPE_NUMBER;
-        setCornerRadius(DEFAULT_CORNER_RADIUS);
+        this.config = config;
+
+        setCornerRadius(config.cornerRadius);
         RoundRectShape shape = new RoundRectShape(outerR, null, null);
         backgroundDrawable = new ShapeDrawable(shape);
         shape = new RoundRectShape(outerROfText2, null, null);
         backgroundDrawableOfText2 = new ShapeDrawable(shape);
 
-        setTextSize(DEFAULT_TEXT_SIZE);
-        setBadgeColor(DEFAULT_BADGE_COLOR);
-        setTextColor(DEFAULT_TEXT_COLOR);
+        setTextSize(config.textSize);
+        measureBadge();
     }
 
     public void setBadgeType(int type) {
-        badgeType = type;
+        config.badgeType = type;
 
         measureBadge();
     }
 
     public void setCornerRadius(float radius) {
-        if (cornerRadius != radius) {
-            cornerRadius = radius;
+        if (config.cornerRadius != radius) {
+            config.cornerRadius = radius;
             outerR[0] = outerR[1] = outerR[2] = outerR[3] =
-                    outerR[4] = outerR[5] = outerR[6] = outerR[7] = cornerRadius;
+                    outerR[4] = outerR[5] = outerR[6] = outerR[7] = config.cornerRadius;
 
             outerROfText2[0] = outerROfText2[1] = outerROfText2[6] = outerROfText2[7] = 0f;
-            outerROfText2[2] = outerROfText2[3] = outerROfText2[4] = outerROfText2[5] = cornerRadius;
+            outerROfText2[2] = outerROfText2[3] = outerROfText2[4] = outerROfText2[5] = config.cornerRadius;
         }
     }
 
     public void setBadgeColor(int color) {
-        badgeColor = color;
+        config.badgeColor = color;
     }
 
     public int getBadgeColor() {
-        return badgeColor;
+        return config.badgeColor;
     }
 
     public void setTextColor(int color) {
-        textColor = color;
+        config.textColor = color;
     }
 
     public int getTextColor() {
-        return textColor;
+        return config.textColor;
     }
 
     public void setTextSize(float textSize) {
-        this.textSize = textSize;
+        config.textSize = textSize;
         paint.setTextSize(textSize);
         fontMetrics = paint.getFontMetrics();
 
@@ -156,33 +163,33 @@ public class BadgeDrawable extends Drawable {
     }
 
     public float getTextSize() {
-        return textSize;
+        return config.textSize;
     }
 
     public void setNumber(int number) {
-        this.number = number;
+        config.number = number;
     }
 
     public int getNumber() {
-        return number;
+        return config.number;
     }
 
     public void setText1(String text1) {
-        this.text1 = text1;
+        config.text1 = text1;
         measureBadge();
     }
 
     public String getText1() {
-        return text1;
+        return config.text1;
     }
 
     public void setText2(String text2) {
-        this.text2 = text2;
+        config.text2 = text2;
         measureBadge();
     }
 
     public String getText2() {
-        return text2;
+        return config.text2;
     }
 
     public void setAutoSetBounds(boolean autoSetBounds) {
@@ -190,26 +197,26 @@ public class BadgeDrawable extends Drawable {
     }
 
     private void measureBadge() {
-        switch (badgeType) {
+        switch (config.badgeType) {
             case TYPE_ONLY_ONE_TEXT:
-                text1Width = (int) paint.measureText(text1);
-                badgeHeight = (int) (textSize * 1.4f);
-                badgeWidth = (int) (text1Width + textSize * 0.4f);
+                text1Width = (int) paint.measureText(config.text1);
+                badgeHeight = (int) (config.textSize * 1.4f);
+                badgeWidth = (int) (text1Width + config.textSize * 0.4f);
 
                 setCornerRadius(DEFAULT_CORNER_RADIUS);
                 break;
 
             case TYPE_WITH_TWO_TEXT:
-                text1Width = (int) paint.measureText(text1);
-                text2Width = (int) paint.measureText(text2);
-                badgeHeight = (int) (textSize * 1.4f);
-                badgeWidth = (int) (text1Width + text2Width + textSize * 0.6f);
+                text1Width = (int) paint.measureText(config.text1);
+                text2Width = (int) paint.measureText(config.text2);
+                badgeHeight = (int) (config.textSize * 1.4f);
+                badgeWidth = (int) (text1Width + text2Width + config.textSize * 0.6f);
 
                 setCornerRadius(DEFAULT_CORNER_RADIUS);
                 break;
 
             default:
-                badgeWidth = badgeHeight = (int) (textSize * 1.4f);
+                badgeWidth = badgeHeight = (int) (config.textSize * 1.4f);
                 setCornerRadius(badgeHeight);
         }
 
@@ -224,22 +231,22 @@ public class BadgeDrawable extends Drawable {
             return;
 
         int boundsWidth = right - left;
-        switch (badgeType) {
+        switch (config.badgeType) {
             case TYPE_ONLY_ONE_TEXT:
                 if(!isAutoSetBounds && boundsWidth < badgeWidth) {
-                    text1Width = (int) (boundsWidth - textSize * 0.4f);
+                    text1Width = (int) (boundsWidth - config.textSize * 0.4f);
                     text1Width = text1Width > 0 ? text1Width : 0;
 
-                    badgeWidth = (int) (text1Width + textSize * 0.4f);
+                    badgeWidth = (int) (text1Width + config.textSize * 0.4f);
                 }
                 break;
 
             case TYPE_WITH_TWO_TEXT:
                 if(!isAutoSetBounds && boundsWidth < badgeWidth) {
-                    text2Width = (int) (boundsWidth - text1Width - textSize * 0.6f);
+                    text2Width = (int) (boundsWidth - text1Width - config.textSize * 0.6f);
                     text2Width = text2Width > 0 ? text2Width : 0;
 
-                    badgeWidth = (int) (text1Width + text2Width + textSize * 0.6f);
+                    badgeWidth = (int) (text1Width + text2Width + config.textSize * 0.6f);
                 }
                 break;
         }
@@ -257,32 +264,32 @@ public class BadgeDrawable extends Drawable {
                 bounds.top + marginTopAndBottom,
                 bounds.right - marginLeftAndRight,
                 bounds.bottom - marginTopAndBottom);
-        backgroundDrawable.getPaint().setColor(badgeColor);
+        backgroundDrawable.getPaint().setColor(config.badgeColor);
         backgroundDrawable.draw(canvas);
 
         float textCx = bounds.centerX();
         float textCy = bounds.centerY();
         float textCyOffset = (-fontMetrics.ascent) / 2f - dipToPixels(1);
 
-        switch (badgeType) {
+        switch (config.badgeType) {
             case TYPE_ONLY_ONE_TEXT:
-                paint.setColor(textColor);
+                paint.setColor(config.textColor);
                 canvas.drawText(
-                        cutText(text1, text1Width),
+                        cutText(config.text1, text1Width),
                         textCx,
                         textCy + textCyOffset,
                         paint);
                 break;
 
             case TYPE_WITH_TWO_TEXT:
-                paint.setColor(textColor);
+                paint.setColor(config.textColor);
                 canvas.drawText(
-                        text1,
-                        text1Width / 2f + marginLeftAndRight + textSize * 0.2f,
+                        config.text1,
+                        text1Width / 2f + marginLeftAndRight + config.textSize * 0.2f,
                         textCy + textCyOffset,
                         paint);
 
-                int padding = (int) (textSize * 0.1f);
+                int padding = (int) (config.textSize * 0.1f);
                 backgroundDrawableOfText2.setBounds(
                         bounds.width() - marginLeftAndRight - text2Width - padding * 3,
                         bounds.top + marginTopAndBottom + padding,
@@ -291,18 +298,18 @@ public class BadgeDrawable extends Drawable {
                 backgroundDrawableOfText2.getPaint().setColor(0xffFFFFFF);
                 backgroundDrawableOfText2.draw(canvas);
 
-                paint.setColor(badgeColor);
+                paint.setColor(config.badgeColor);
                 canvas.drawText(
-                        cutText(text2, text2Width),
-                        bounds.width() - marginLeftAndRight - text2Width / 2f - textSize * 0.2f,
+                        cutText(config.text2, text2Width),
+                        bounds.width() - marginLeftAndRight - text2Width / 2f - config.textSize * 0.2f,
                         textCy + textCyOffset,
                         paint);
                 break;
 
             default:
-                paint.setColor(textColor);
+                paint.setColor(config.textColor);
                 canvas.drawText(
-                        cutNumber(number, badgeWidth),
+                        cutNumber(config.number, badgeWidth),
                         textCx,
                         textCy + textCyOffset,
                         paint);
