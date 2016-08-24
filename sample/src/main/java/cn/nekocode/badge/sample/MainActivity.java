@@ -1,6 +1,7 @@
 package cn.nekocode.badge.sample;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
                         .type(BadgeDrawable.TYPE_ONLY_ONE_TEXT)
                         .badgeColor(0xff336699)
                         .text1("VIP")
+                        .typeFace(Typeface.createFromAsset(getAssets(),"fonts/code-bold.otf"))
                         .build();
 
         final BadgeDrawable drawable3 =
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                             .textSize(sp2px(this, 14))
                             .text1("Author")
                             .text2("Nekocode")
+                            .typeFace(Typeface.createFromAsset(getAssets(),"fonts/code-bold.otf"))
                             .build();
 
             imageView.setImageDrawable(drawable5);
