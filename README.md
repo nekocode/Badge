@@ -51,6 +51,7 @@ BadgeDrawable drawable4 =
                 .number(999)
                 .badgeColor(0xff666666)
                 .textColor(0xffFFFF00)
+                .typeFace(Typeface.createFromAsset(getAssets(),"fonts/code-bold.otf"))
                 .build();
 ```
 
