@@ -34,6 +34,7 @@ public class BadgeDrawable extends Drawable {
         private int badgeColor = DEFAULT_BADGE_COLOR;
         private int textColor = DEFAULT_TEXT_COLOR;
         private float textSize = DEFAULT_TEXT_SIZE;
+        private Typeface typeface = Typeface.DEFAULT_BOLD;
 
     }
     private Config config;
@@ -63,6 +64,11 @@ public class BadgeDrawable extends Drawable {
 
         public Builder cornerRadius(float radius) {
             config.cornerRadius = radius;
+            return this;
+        }
+
+        public Builder typeFace(Typeface typeface) {
+            config.typeface = typeface;
             return this;
         }
 
@@ -104,7 +110,7 @@ public class BadgeDrawable extends Drawable {
     private BadgeDrawable(Config config) {
         paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setTypeface(Typeface.DEFAULT_BOLD);
+        paint.setTypeface(config.typeface);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setStyle(Paint.Style.FILL);
         paint.setAlpha(255);
