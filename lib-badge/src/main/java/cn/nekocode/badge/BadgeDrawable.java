@@ -127,6 +127,7 @@ public class BadgeDrawable extends Drawable {
         backgroundDrawableOfText1 = new ShapeDrawable(shape);
         shape = new RoundRectShape(outerROfText2, null, null);
         backgroundDrawableOfText2 = new ShapeDrawable(shape);
+
         setTextSize(config.textSize);
         measureBadge();
     }
@@ -227,6 +228,7 @@ public class BadgeDrawable extends Drawable {
 
                 setCornerRadius(DEFAULT_CORNER_RADIUS);
                 break;
+
             case TYPE_WITH_TWO_TEXT_COMPLEMENTARY:
                 text1Width = (int) paint.measureText(config.text1);
                 text2Width = (int) paint.measureText(config.text2);
@@ -270,6 +272,7 @@ public class BadgeDrawable extends Drawable {
                     badgeWidth = (int) (text1Width + text2Width + config.textSize * 0.7f);
                 }
                 break;
+
             case TYPE_WITH_TWO_TEXT_COMPLEMENTARY:
                 if(!isAutoSetBounds && boundsWidth < badgeWidth) {
                     text2Width = (int) (boundsWidth - text1Width - config.textSize * 0.6f);
@@ -338,18 +341,20 @@ public class BadgeDrawable extends Drawable {
             case TYPE_WITH_TWO_TEXT:
                 padding = (int) (config.textSize * 0.1f);
                 backgroundDrawableOfText1.setBounds(
-                        bounds.left + padding + marginLeftAndRight,
+                        bounds.left + marginLeftAndRight + padding,
                         bounds.top + marginTopAndBottom + padding,
                         bounds.left + marginLeftAndRight  + text1Width + padding * 3,
                         bounds.bottom - marginTopAndBottom - padding);
                 backgroundDrawableOfText1.getPaint().setColor(0xffFFFFFF);
                 backgroundDrawableOfText1.draw(canvas);
+
                 paint.setColor(config.textColor);
                 canvas.drawText(
                         config.text1,
                         text1Width / 2f + marginLeftAndRight + config.textSize * 0.2f,
                         textCy + textCyOffset,
                         paint);
+
                 backgroundDrawableOfText2.setBounds(
                         bounds.width() - marginLeftAndRight - text2Width - padding * 3,
                         bounds.top + marginTopAndBottom + padding,

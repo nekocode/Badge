@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
                         .type(BadgeDrawable.TYPE_ONLY_ONE_TEXT)
                         .badgeColor(0xff336699)
                         .text1("VIP")
-                        .typeFace(Typeface.createFromAsset(getAssets(),"fonts/code-bold.otf"))
                         .build();
 
         final BadgeDrawable drawable3 =
@@ -47,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
                         .type(BadgeDrawable.TYPE_WITH_TWO_TEXT)
                         .badgeColor(0xffCC9933)
                         .textColor(0xffCC9944)
-                        .text1("LEVEL")
-                        .text2("10")
+                        .text1("TESTfdsafdsafsdff")
+                        .text2("Passfdsfdsf")
                         .build();
 
         final BadgeDrawable drawable5 =
