@@ -20,6 +20,7 @@ public class BadgeDrawable extends Drawable {
     public static final int TYPE_NUMBER = 1;
     public static final int TYPE_ONLY_ONE_TEXT = 1 << 1;
     public static final int TYPE_WITH_TWO_TEXT = 1 << 2;
+    public static final int TYPE_WITH_TWO_TEXT_COMPLEMENTARY = 1 << 3;
     private static final float DEFAULT_CORNER_RADIUS = dipToPixels(2);
     private static final float DEFAULT_TEXT_SIZE = spToPixels(12);
     private static final int DEFAULT_BADGE_COLOR = 0xffCC3333;
@@ -41,9 +42,11 @@ public class BadgeDrawable extends Drawable {
 
     private ShapeDrawable backgroundDrawable;
     private ShapeDrawable backgroundDrawableOfText2;
+    private ShapeDrawable backgroundDrawableOfText1;
     private int badgeWidth;
     private int badgeHeight;
     private float[] outerR = new float[]{0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f};
+    private float[] outerROfText1 = new float[]{0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f};
     private float[] outerROfText2 = new float[]{0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f};
     private Paint paint;
     private Paint.FontMetrics fontMetrics;
@@ -120,9 +123,10 @@ public class BadgeDrawable extends Drawable {
         setCornerRadius(config.cornerRadius);
         RoundRectShape shape = new RoundRectShape(outerR, null, null);
         backgroundDrawable = new ShapeDrawable(shape);
+        shape = new RoundRectShape(outerROfText1, null, null);
+        backgroundDrawableOfText1 = new ShapeDrawable(shape);
         shape = new RoundRectShape(outerROfText2, null, null);
         backgroundDrawableOfText2 = new ShapeDrawable(shape);
-
         setTextSize(config.textSize);
         measureBadge();
     }
@@ -138,6 +142,9 @@ public class BadgeDrawable extends Drawable {
             config.cornerRadius = radius;
             outerR[0] = outerR[1] = outerR[2] = outerR[3] =
                     outerR[4] = outerR[5] = outerR[6] = outerR[7] = config.cornerRadius;
+
+            outerROfText1[0] = outerROfText1[1] = outerROfText1[6] = outerROfText1[7] = config.cornerRadius;
+            outerROfText1[2] = outerROfText1[3] = outerROfText1[4] = outerROfText1[5] = 0f;
 
             outerROfText2[0] = outerROfText2[1] = outerROfText2[6] = outerROfText2[7] = 0f;
             outerROfText2[2] = outerROfText2[3] = outerROfText2[4] = outerROfText2[5] = config.cornerRadius;
@@ -216,6 +223,14 @@ public class BadgeDrawable extends Drawable {
                 text1Width = (int) paint.measureText(config.text1);
                 text2Width = (int) paint.measureText(config.text2);
                 badgeHeight = (int) (config.textSize * 1.4f);
+                badgeWidth = (int) (text1Width + text2Width + config.textSize * 0.7f);
+
+                setCornerRadius(DEFAULT_CORNER_RADIUS);
+                break;
+            case TYPE_WITH_TWO_TEXT_COMPLEMENTARY:
+                text1Width = (int) paint.measureText(config.text1);
+                text2Width = (int) paint.measureText(config.text2);
+                badgeHeight = (int) (config.textSize * 1.4f);
                 badgeWidth = (int) (text1Width + text2Width + config.textSize * 0.6f);
 
                 setCornerRadius(DEFAULT_CORNER_RADIUS);
@@ -248,6 +263,14 @@ public class BadgeDrawable extends Drawable {
                 break;
 
             case TYPE_WITH_TWO_TEXT:
+                if(!isAutoSetBounds && boundsWidth < badgeWidth) {
+                    text2Width = (int) (boundsWidth - text1Width - config.textSize * 0.7f);
+                    text2Width = text2Width > 0 ? text2Width : 0;
+
+                    badgeWidth = (int) (text1Width + text2Width + config.textSize * 0.7f);
+                }
+                break;
+            case TYPE_WITH_TWO_TEXT_COMPLEMENTARY:
                 if(!isAutoSetBounds && boundsWidth < badgeWidth) {
                     text2Width = (int) (boundsWidth - text1Width - config.textSize * 0.6f);
                     text2Width = text2Width > 0 ? text2Width : 0;
@@ -287,7 +310,7 @@ public class BadgeDrawable extends Drawable {
                         paint);
                 break;
 
-            case TYPE_WITH_TWO_TEXT:
+            case TYPE_WITH_TWO_TEXT_COMPLEMENTARY:
                 paint.setColor(config.textColor);
                 canvas.drawText(
                         config.text1,
@@ -301,10 +324,41 @@ public class BadgeDrawable extends Drawable {
                         bounds.top + marginTopAndBottom + padding,
                         bounds.width() - marginLeftAndRight - padding,
                         bounds.bottom - marginTopAndBottom - padding);
-                backgroundDrawableOfText2.getPaint().setColor(0xffFFFFFF);
+                backgroundDrawableOfText2.getPaint().setColor(config.textColor);
                 backgroundDrawableOfText2.draw(canvas);
 
                 paint.setColor(config.badgeColor);
+                canvas.drawText(
+                        cutText(config.text2, text2Width),
+                        bounds.width() - marginLeftAndRight - text2Width / 2f - config.textSize * 0.2f,
+                        textCy + textCyOffset,
+                        paint);
+                break;
+
+            case TYPE_WITH_TWO_TEXT:
+                padding = (int) (config.textSize * 0.1f);
+                backgroundDrawableOfText1.setBounds(
+                        bounds.left + padding + marginLeftAndRight,
+                        bounds.top + marginTopAndBottom + padding,
+                        bounds.left + marginLeftAndRight  + text1Width + padding * 3,
+                        bounds.bottom - marginTopAndBottom - padding);
+                backgroundDrawableOfText1.getPaint().setColor(0xffFFFFFF);
+                backgroundDrawableOfText1.draw(canvas);
+                paint.setColor(config.textColor);
+                canvas.drawText(
+                        config.text1,
+                        text1Width / 2f + marginLeftAndRight + config.textSize * 0.2f,
+                        textCy + textCyOffset,
+                        paint);
+                backgroundDrawableOfText2.setBounds(
+                        bounds.width() - marginLeftAndRight - text2Width - padding * 3,
+                        bounds.top + marginTopAndBottom + padding,
+                        bounds.width() - marginLeftAndRight - padding,
+                        bounds.bottom - marginTopAndBottom - padding);
+                backgroundDrawableOfText2.getPaint().setColor(0xffFFFFFF);
+                backgroundDrawableOfText2.draw(canvas);
+
+                paint.setColor(config.textColor);
                 canvas.drawText(
                         cutText(config.text2, text2Width),
                         bounds.width() - marginLeftAndRight - text2Width / 2f - config.textSize * 0.2f,

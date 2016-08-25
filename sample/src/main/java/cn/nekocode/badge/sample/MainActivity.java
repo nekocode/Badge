@@ -36,13 +36,22 @@ public class MainActivity extends AppCompatActivity {
 
         final BadgeDrawable drawable3 =
                 new BadgeDrawable.Builder()
-                        .type(BadgeDrawable.TYPE_WITH_TWO_TEXT)
+                        .type(BadgeDrawable.TYPE_WITH_TWO_TEXT_COMPLEMENTARY)
                         .badgeColor(0xffCC9933)
                         .text1("LEVEL")
                         .text2("10")
                         .build();
 
         final BadgeDrawable drawable4 =
+                new BadgeDrawable.Builder()
+                        .type(BadgeDrawable.TYPE_WITH_TWO_TEXT)
+                        .badgeColor(0xffCC9933)
+                        .textColor(0xffCC9944)
+                        .text1("LEVEL")
+                        .text2("10")
+                        .build();
+
+        final BadgeDrawable drawable5 =
                 new BadgeDrawable.Builder()
                         .type(BadgeDrawable.TYPE_NUMBER)
                         .number(999)
@@ -59,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
                         " ",
                         drawable3.toSpannable(),
                         " ",
-                        drawable4.toSpannable()
+                        drawable4.toSpannable(),
+                        " ",
+                        drawable5.toSpannable()
                 ));
 
         if (textView != null) {
@@ -67,9 +78,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (imageView != null) {
-            final BadgeDrawable drawable5 =
+            final BadgeDrawable drawable6 =
                     new BadgeDrawable.Builder()
-                            .type(BadgeDrawable.TYPE_WITH_TWO_TEXT)
+                            .type(BadgeDrawable.TYPE_WITH_TWO_TEXT_COMPLEMENTARY)
                             .badgeColor(0xff336633)
                             .textSize(sp2px(this, 14))
                             .text1("Author")
@@ -77,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                             .typeFace(Typeface.createFromAsset(getAssets(),"fonts/code-bold.otf"))
                             .build();
 
-            imageView.setImageDrawable(drawable5);
+            imageView.setImageDrawable(drawable6);
         }
     }
 
