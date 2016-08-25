@@ -23,21 +23,10 @@ dependencies {
 
 This library provides four types of badges with cliche customizations.
 
-* `TYPE_NUMBER`
-
-    ![number](art/number.png)
-
-* `TYPE_ONLY_ONE_TEXT`
-
-    ![single](art/single_text.png)
-
-* `TYPE_TWO_TEXT`
-
-    ![two](art/two_text.png)
-
-* `TYPE_TWO_TEXT_COMPLEMENTARY`
-
-    ![complementary](art/two_text_complementary.png)
+| Type | Badge | Type | Badge |
+| :----- | :------ | :----- | :------ |
+| **`TYPE_NUMBER`** | ![number](art/number.png) | **`TYPE_ONLY_ONE_TEXT`** | ![single](art/single_text.png) |
+| **`TYPE_TWO_TEXT`** | ![two](art/two_text.png) | **`TYPE_TWO_TEXT_COMPLEMENTARY`** | ![complementary](art/two_text_complementary.png) |
 
 ### Usage
 
