@@ -348,7 +348,7 @@ public class BadgeDrawable extends Drawable {
                 backgroundDrawableOfText1.getPaint().setColor(0xffFFFFFF);
                 backgroundDrawableOfText1.draw(canvas);
 
-                paint.setColor(config.textColor);
+                paint.setColor(config.badgeColor);
                 canvas.drawText(
                         config.text1,
                         text1Width / 2f + marginLeftAndRight + config.textSize * 0.2f,
@@ -356,14 +356,15 @@ public class BadgeDrawable extends Drawable {
                         paint);
 
                 backgroundDrawableOfText2.setBounds(
-                        bounds.width() - marginLeftAndRight - text2Width - padding * 3,
+//                        bounds.width() - marginLeftAndRight - text2Width - padding * 3,
+                        bounds.left + marginLeftAndRight  + text1Width + padding * 4,
                         bounds.top + marginTopAndBottom + padding,
                         bounds.width() - marginLeftAndRight - padding,
                         bounds.bottom - marginTopAndBottom - padding);
                 backgroundDrawableOfText2.getPaint().setColor(0xffFFFFFF);
                 backgroundDrawableOfText2.draw(canvas);
 
-                paint.setColor(config.textColor);
+                paint.setColor(config.badgeColor);
                 canvas.drawText(
                         cutText(config.text2, text2Width),
                         bounds.width() - marginLeftAndRight - text2Width / 2f - config.textSize * 0.2f,

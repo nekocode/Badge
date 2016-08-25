@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
+        android:textStyle="bold"
         />
 
     <ImageView
@@ -36,6 +37,7 @@
         android:layout_below="@+id/tvHelloWorld"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="43dp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
         />
 </RelativeLayout>

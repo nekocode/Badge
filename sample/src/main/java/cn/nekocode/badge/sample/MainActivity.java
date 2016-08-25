@@ -44,23 +44,21 @@ public class MainActivity extends AppCompatActivity {
         final BadgeDrawable drawable4 =
                 new BadgeDrawable.Builder()
                         .type(BadgeDrawable.TYPE_WITH_TWO_TEXT)
-                        .badgeColor(0xffCC9933)
-                        .textColor(0xffCC9944)
-                        .text1("TESTfdsafdsafsdff")
-                        .text2("Passfdsfdsf")
+                        .badgeColor(0xffCC9999)
+                        .text1("TEST")
+                        .text2("Pass")
                         .build();
 
         final BadgeDrawable drawable5 =
                 new BadgeDrawable.Builder()
                         .type(BadgeDrawable.TYPE_NUMBER)
                         .number(999)
-                        .badgeColor(0xff666666)
-                        .textColor(0xffFFFF00)
+                        .badgeColor(0xff336699)
                         .build();
 
         SpannableString spannableString =
                 new SpannableString(TextUtils.concat(
-                        "TextView ",
+                        "TextView: ",
                         drawable.toSpannable(),
                         " ",
                         drawable2.toSpannable(),
