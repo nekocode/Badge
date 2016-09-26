@@ -4,11 +4,14 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
+import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
@@ -21,6 +24,9 @@ public class BadgeDrawable extends Drawable {
     public static final int TYPE_ONLY_ONE_TEXT = 1 << 1;
     public static final int TYPE_WITH_TWO_TEXT = 1 << 2;
     public static final int TYPE_WITH_TWO_TEXT_COMPLEMENTARY = 1 << 3;
+    @IntDef({TYPE_NUMBER, TYPE_ONLY_ONE_TEXT, TYPE_WITH_TWO_TEXT, TYPE_WITH_TWO_TEXT_COMPLEMENTARY})
+    public @interface  BadgeType {}
+
     private static final float DEFAULT_CORNER_RADIUS = dipToPixels(2);
     private static final float DEFAULT_TEXT_SIZE = spToPixels(12);
     private static final int DEFAULT_BADGE_COLOR = 0xffCC3333;
@@ -60,7 +66,7 @@ public class BadgeDrawable extends Drawable {
             config = new Config();
         }
 
-        public Builder type(int type) {
+        public Builder type(@BadgeType int type) {
             config.badgeType = type;
             return this;
         }
@@ -132,7 +138,7 @@ public class BadgeDrawable extends Drawable {
         measureBadge();
     }
 
-    public void setBadgeType(int type) {
+    public void setBadgeType(@BadgeType int type) {
         _CONFIG.badgeType = type;
 
         measureBadge();
@@ -286,7 +292,7 @@ public class BadgeDrawable extends Drawable {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(@NonNull Canvas canvas) {
         Rect bounds = getBounds();
 
         int marginTopAndBottom = (int) ((bounds.height() - badgeHeight) / 2f);
@@ -405,7 +411,7 @@ public class BadgeDrawable extends Drawable {
 
     @Override
     public int getOpacity() {
-        return 0;
+        return PixelFormat.UNKNOWN;
     }
 
     private String cutNumber(int number, int width) {
