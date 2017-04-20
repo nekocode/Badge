@@ -43,22 +43,16 @@ public class BadgeDrawable extends Drawable {
     @IntDef({TYPE_NUMBER, TYPE_ONLY_ONE_TEXT, TYPE_WITH_TWO_TEXT, TYPE_WITH_TWO_TEXT_COMPLEMENTARY})
     public @interface  BadgeType {}
 
-    private static final float DEFAULT_CORNER_RADIUS = dipToPixels(2);
-    private static final float DEFAULT_TEXT_SIZE = spToPixels(12);
-    private static final int DEFAULT_BADGE_COLOR = 0xffCC3333;
-    private static final int DEFAULT_TEXT_COLOR = 0xffFFFFFF;
-
     private static class Config {
         private int badgeType = TYPE_NUMBER;
-        private float cornerRadius;
         private int number = 0;
         private String text1 = "";
         private String text2 = "";
-        private int badgeColor = DEFAULT_BADGE_COLOR;
-        private int textColor = DEFAULT_TEXT_COLOR;
-        private float textSize = DEFAULT_TEXT_SIZE;
+        private float textSize = spToPixels(12);
+        private int badgeColor = 0xffCC3333;
+        private int textColor = 0xffFFFFFF;
+        private float cornerRadius = dipToPixels(2);
         private Typeface typeface = Typeface.DEFAULT_BOLD;
-
     }
     private Config _CONFIG;
 
@@ -86,16 +80,6 @@ public class BadgeDrawable extends Drawable {
             return this;
         }
 
-        public Builder cornerRadius(float radius) {
-            config.cornerRadius = radius;
-            return this;
-        }
-
-        public Builder typeFace(Typeface typeface) {
-            config.typeface = typeface;
-            return this;
-        }
-
         public Builder number(int number) {
             config.number = number;
             return this;
@@ -111,6 +95,11 @@ public class BadgeDrawable extends Drawable {
             return this;
         }
 
+        public Builder textSize(float size) {
+            config.textSize = size;
+            return this;
+        }
+
         public Builder badgeColor(int color) {
             config.badgeColor = color;
             return this;
@@ -121,8 +110,13 @@ public class BadgeDrawable extends Drawable {
             return this;
         }
 
-        public Builder textSize(float size) {
-            config.textSize = size;
+        public Builder cornerRadius(float radius) {
+            config.cornerRadius = radius;
+            return this;
+        }
+
+        public Builder typeFace(Typeface typeface) {
+            config.typeface = typeface;
             return this;
         }
 
@@ -160,17 +154,15 @@ public class BadgeDrawable extends Drawable {
     }
 
     public void setCornerRadius(float radius) {
-        if (_CONFIG.cornerRadius != radius) {
-            _CONFIG.cornerRadius = radius;
-            outerR[0] = outerR[1] = outerR[2] = outerR[3] =
-                    outerR[4] = outerR[5] = outerR[6] = outerR[7] = _CONFIG.cornerRadius;
+        _CONFIG.cornerRadius = radius;
+        outerR[0] = outerR[1] = outerR[2] = outerR[3] =
+                outerR[4] = outerR[5] = outerR[6] = outerR[7] = radius;
 
-            outerROfText1[0] = outerROfText1[1] = outerROfText1[6] = outerROfText1[7] = _CONFIG.cornerRadius;
-            outerROfText1[2] = outerROfText1[3] = outerROfText1[4] = outerROfText1[5] = 0f;
+        outerROfText1[0] = outerROfText1[1] = outerROfText1[6] = outerROfText1[7] = radius;
+        outerROfText1[2] = outerROfText1[3] = outerROfText1[4] = outerROfText1[5] = 0f;
 
-            outerROfText2[0] = outerROfText2[1] = outerROfText2[6] = outerROfText2[7] = 0f;
-            outerROfText2[2] = outerROfText2[3] = outerROfText2[4] = outerROfText2[5] = _CONFIG.cornerRadius;
-        }
+        outerROfText2[0] = outerROfText2[1] = outerROfText2[6] = outerROfText2[7] = 0f;
+        outerROfText2[2] = outerROfText2[3] = outerROfText2[4] = outerROfText2[5] = radius;
     }
 
     public void setBadgeColor(int color) {
@@ -234,7 +226,7 @@ public class BadgeDrawable extends Drawable {
                 badgeHeight = (int) (_CONFIG.textSize * 1.4f);
                 badgeWidth = (int) (text1Width + _CONFIG.textSize * 0.4f);
 
-                setCornerRadius(DEFAULT_CORNER_RADIUS);
+                setCornerRadius(_CONFIG.cornerRadius);
                 break;
 
             case TYPE_WITH_TWO_TEXT:
@@ -243,7 +235,7 @@ public class BadgeDrawable extends Drawable {
                 badgeHeight = (int) (_CONFIG.textSize * 1.4f);
                 badgeWidth = (int) (text1Width + text2Width + _CONFIG.textSize * 0.7f);
 
-                setCornerRadius(DEFAULT_CORNER_RADIUS);
+                setCornerRadius(_CONFIG.cornerRadius);
                 break;
 
             case TYPE_WITH_TWO_TEXT_COMPLEMENTARY:
@@ -252,7 +244,7 @@ public class BadgeDrawable extends Drawable {
                 badgeHeight = (int) (_CONFIG.textSize * 1.4f);
                 badgeWidth = (int) (text1Width + text2Width + _CONFIG.textSize * 0.6f);
 
-                setCornerRadius(DEFAULT_CORNER_RADIUS);
+                setCornerRadius(_CONFIG.cornerRadius);
                 break;
 
             default:
