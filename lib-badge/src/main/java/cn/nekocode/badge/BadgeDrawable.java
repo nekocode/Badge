@@ -1,3 +1,19 @@
+/*
+ * Copyright 2017. nekocode (nekocode.cn@gmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package cn.nekocode.badge;
 
 import android.content.res.Resources;
@@ -17,7 +33,7 @@ import android.text.Spanned;
 import android.text.style.ImageSpan;
 
 /**
- * Created by nekocode on 16/5/28.
+ * @author nekocode (nekocode.cn@gmail.com)
  */
 public class BadgeDrawable extends Drawable {
     public static final int TYPE_NUMBER = 1;
@@ -57,7 +73,6 @@ public class BadgeDrawable extends Drawable {
     private Paint paint;
     private Paint.FontMetrics fontMetrics;
     private int text1Width, text2Width;
-    private boolean isNeedAutoSetBounds = false;
 
     public static class Builder {
         private Config config;
@@ -212,10 +227,6 @@ public class BadgeDrawable extends Drawable {
         return _CONFIG.text2;
     }
 
-    public void setNeedAutoSetBounds(boolean needAutoSetBounds) {
-        this.isNeedAutoSetBounds = needAutoSetBounds;
-    }
-
     private void measureBadge() {
         switch (_CONFIG.badgeType) {
             case TYPE_ONLY_ONE_TEXT:
@@ -248,16 +259,11 @@ public class BadgeDrawable extends Drawable {
                 badgeWidth = badgeHeight = (int) (_CONFIG.textSize * 1.4f);
                 setCornerRadius(badgeHeight);
         }
-
-        if (isNeedAutoSetBounds)
-            setBounds(0, 0, badgeWidth, badgeHeight);
     }
 
     @Override
     public void setBounds(int left, int top, int right, int bottom) {
         super.setBounds(left, top, right, bottom);
-        if (isNeedAutoSetBounds)
-            return;
 
         // If any view set the bounds of this drawable
         int boundsWidth = right - left;
@@ -308,7 +314,7 @@ public class BadgeDrawable extends Drawable {
 
         float textCx = bounds.centerX();
         float textCy = bounds.centerY();
-        float textCyOffset = (-fontMetrics.ascent) / 2f - dipToPixels(1);
+        float textCyOffset = - (fontMetrics.ascent + fontMetrics.descent / 2f) / 2f;
 
         switch (_CONFIG.badgeType) {
             case TYPE_ONLY_ONE_TEXT:
@@ -391,12 +397,12 @@ public class BadgeDrawable extends Drawable {
 
     @Override
     public int getIntrinsicWidth() {
-        return isNeedAutoSetBounds ? badgeWidth : -1;
+        return badgeWidth;
     }
 
     @Override
     public int getIntrinsicHeight() {
-        return isNeedAutoSetBounds ? badgeHeight : -1;
+        return badgeHeight;
     }
 
     @Override
@@ -411,7 +417,7 @@ public class BadgeDrawable extends Drawable {
 
     @Override
     public int getOpacity() {
-        return PixelFormat.UNKNOWN;
+        return PixelFormat.TRANSLUCENT;
     }
 
     private String cutNumber(int number, int width) {
@@ -444,8 +450,7 @@ public class BadgeDrawable extends Drawable {
     public SpannableString toSpannable() {
         final SpannableString spanStr = new SpannableString(" ");
         spanStr.setSpan(new ImageSpan(this, ImageSpan.ALIGN_BOTTOM), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        isNeedAutoSetBounds = true;
-        setBounds(0, 0, badgeWidth, badgeHeight);
+        setBounds(0, 0, getIntrinsicWidth(), getIntrinsicHeight());
 
         return spanStr;
     }

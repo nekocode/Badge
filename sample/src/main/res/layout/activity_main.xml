@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".sample.MainActivity"
+    tools:context=".MainActivity"
     >
 
     <TextView
@@ -23,21 +23,22 @@
         android:id="@+id/imageView"
         android:layout_width="200dp"
         android:layout_height="100dp"
-        android:background="@color/material_grey_300"
-        android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
+        android:background="@color/material_grey_300"
+        android:scaleType="fitXY"
         />
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ImageView:"
-        android:id="@+id/textView"
-        android:layout_below="@+id/tvHelloWorld"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/tvHelloWorld"
         android:layout_marginTop="20dp"
+        android:text="ImageView:"
         android:textStyle="bold"
         />
 </RelativeLayout>
