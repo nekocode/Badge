@@ -5,7 +5,7 @@
 
 ![](art/preview.png)
 
-### Using with gradle
+## Using with gradle
 - Add the JitPack repository to your root build.gradle:
 ```gradle
 repositories {
@@ -19,7 +19,7 @@ dependencies {
     compile 'com.github.nekocode:Badge:{lastest-version}'
 }
 ```
-### Badge Types
+## Badge Types
 
 This library provides four types of badges with cliche customizations.
 
@@ -28,7 +28,11 @@ This library provides four types of badges with cliche customizations.
 | **`TYPE_NUMBER`** | ![number](art/number.png) | **`TYPE_ONLY_ONE_TEXT`** | ![single](art/single_text.png) |
 | **`TYPE_TWO_TEXT`** | ![two](art/two_text.png) | **`TYPE_TWO_TEXT_COMPLEMENTARY`** | ![complementary](art/two_text_complementary.png) |
 
-### Usage
+### Attributes
+
+![](art/attributes.png)
+
+## Usage
 
 The above screenshot's example:
 
