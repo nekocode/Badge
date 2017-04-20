@@ -56,6 +56,8 @@ final BadgeDrawable drawable3 =
                 .badgeColor(0xffCC9933)
                 .text1("LEVEL")
                 .text2("10")
+                .padding(dp2px(2), dp2px(2), dp2px(2), dp2px(2), dp2px(2))
+                .strokeWidth(dp2px(1))
                 .build();
 
 final BadgeDrawable drawable4 =
