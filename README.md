@@ -5,7 +5,7 @@
 
 ![](art/preview.png)
 
-## Using with gradle
+## Integration
 - Add the JitPack repository to your root build.gradle:
 ```gradle
 repositories {
@@ -16,9 +16,10 @@ repositories {
 - Add the dependency to your sub build.gradle:
 ```gradle
 dependencies {
-    compile 'com.github.nekocode:Badge:{lastest-version}'
+    implementation "com.github.nekocode:Badge:${last-version}"
 }
 ```
+
 ## Badge Types
 
 This library provides four types of badges with cliche customizations.
