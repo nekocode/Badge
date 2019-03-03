@@ -58,7 +58,7 @@ public class BadgeDrawable extends Drawable {
         private float paddingRight = dipToPixels(2);
         private float paddingBottom = dipToPixels(2);
         private float paddingCenter = dipToPixels(3);
-        private int storkeWidth = (int) dipToPixels(1);
+        private int strokeWidth = (int) dipToPixels(1);
     }
     private Config config;
 
@@ -136,7 +136,7 @@ public class BadgeDrawable extends Drawable {
         }
 
         public Builder strokeWidth(int width) {
-            config.storkeWidth = width;
+            config.strokeWidth = width;
             return this;
         }
 
@@ -249,7 +249,7 @@ public class BadgeDrawable extends Drawable {
     }
 
     public void setStrokeWidth(int width) {
-        config.storkeWidth = width;
+        config.strokeWidth = width;
     }
 
     private void measureBadge() {
@@ -365,9 +365,9 @@ public class BadgeDrawable extends Drawable {
                 backgroundDrawableOfText2.setBounds(
                         (int) (bounds.left + marginLeftAndRight + config.paddingLeft +
                                 text1Width + config.paddingCenter / 2f),
-                        bounds.top + marginTopAndBottom+ config.storkeWidth,
-                        bounds.width() - marginLeftAndRight - config.storkeWidth,
-                        bounds.bottom - marginTopAndBottom - config.storkeWidth);
+                        bounds.top + marginTopAndBottom+ config.strokeWidth,
+                        bounds.width() - marginLeftAndRight - config.strokeWidth,
+                        bounds.bottom - marginTopAndBottom - config.strokeWidth);
                 backgroundDrawableOfText2.getPaint().setColor(config.textColor);
                 backgroundDrawableOfText2.draw(canvas);
 
@@ -381,11 +381,11 @@ public class BadgeDrawable extends Drawable {
 
             case TYPE_WITH_TWO_TEXT:
                 backgroundDrawableOfText1.setBounds(
-                        bounds.left + marginLeftAndRight + config.storkeWidth,
-                        bounds.top + marginTopAndBottom+ config.storkeWidth,
+                        bounds.left + marginLeftAndRight + config.strokeWidth,
+                        bounds.top + marginTopAndBottom+ config.strokeWidth,
                         (int) (bounds.left + marginLeftAndRight + config.paddingLeft +
-                                text1Width + config.paddingCenter / 2f - config.storkeWidth / 2f),
-                        bounds.bottom - marginTopAndBottom - config.storkeWidth);
+                                text1Width + config.paddingCenter / 2f - config.strokeWidth / 2f),
+                        bounds.bottom - marginTopAndBottom - config.strokeWidth);
                 backgroundDrawableOfText1.getPaint().setColor(0xffFFFFFF);
                 backgroundDrawableOfText1.draw(canvas);
 
@@ -398,10 +398,10 @@ public class BadgeDrawable extends Drawable {
 
                 backgroundDrawableOfText2.setBounds(
                         (int) (bounds.left + marginLeftAndRight + config.paddingLeft +
-                                text1Width + config.paddingCenter / 2f + config.storkeWidth / 2f),
-                        bounds.top + marginTopAndBottom + config.storkeWidth,
-                        bounds.width() - marginLeftAndRight - config.storkeWidth,
-                        bounds.bottom - marginTopAndBottom - config.storkeWidth);
+                                text1Width + config.paddingCenter / 2f + config.strokeWidth / 2f),
+                        bounds.top + marginTopAndBottom + config.strokeWidth,
+                        bounds.width() - marginLeftAndRight - config.strokeWidth,
+                        bounds.bottom - marginTopAndBottom - config.strokeWidth);
                 backgroundDrawableOfText2.getPaint().setColor(0xffFFFFFF);
                 backgroundDrawableOfText2.draw(canvas);
 
