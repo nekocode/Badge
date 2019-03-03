@@ -28,6 +28,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
@@ -75,57 +76,71 @@ public class BadgeDrawable extends Drawable {
     private int text1Width, text2Width;
 
     public static class Builder {
-        private Config config;
+        private final Config config;
 
         public Builder() {
             config = new Config();
         }
 
+        private Builder(Config config) {
+            this.config = config;
+        }
+
+        @NonNull
         public Builder type(@BadgeType int type) {
             config.badgeType = type;
             return this;
         }
 
+        @NonNull
         public Builder number(int number) {
             config.number = number;
             return this;
         }
 
-        public Builder text1(String text1) {
+        @NonNull
+        public Builder text1(@Nullable String text1) {
             config.text1 = text1;
             return this;
         }
 
-        public Builder text2(String text2) {
+        @NonNull
+        public Builder text2(@Nullable String text2) {
             config.text2 = text2;
             return this;
         }
 
+        @NonNull
         public Builder textSize(float size) {
             config.textSize = size;
             return this;
         }
 
+        @NonNull
         public Builder badgeColor(int color) {
             config.badgeColor = color;
             return this;
         }
 
+        @NonNull
         public Builder textColor(int color) {
             config.textColor = color;
             return this;
         }
 
-        public Builder typeFace(Typeface typeface) {
+        @NonNull
+        public Builder typeFace(@Nullable Typeface typeface) {
             config.typeface = typeface;
             return this;
         }
 
+        @NonNull
         public Builder cornerRadius(float radius) {
             config.cornerRadius = radius;
             return this;
         }
 
+        @NonNull
         public Builder padding(float l, float t, float r, float b, float c) {
             config.paddingLeft = l;
             config.paddingTop = t;
@@ -135,11 +150,13 @@ public class BadgeDrawable extends Drawable {
             return this;
         }
 
+        @NonNull
         public Builder strokeWidth(int width) {
             config.strokeWidth = width;
             return this;
         }
 
+        @NonNull
         public BadgeDrawable build() {
             return new BadgeDrawable(config);
         }
@@ -167,10 +184,19 @@ public class BadgeDrawable extends Drawable {
         measureBadge();
     }
 
+    @NonNull
+    public Builder buildUpon() {
+        return new Builder(config);
+    }
+
     public void setBadgeType(@BadgeType int type) {
         config.badgeType = type;
-
         measureBadge();
+    }
+
+    @BadgeType
+    public int getBadgeType() {
+        return config.badgeType;
     }
 
     public void setNumber(int number) {
@@ -181,20 +207,22 @@ public class BadgeDrawable extends Drawable {
         return config.number;
     }
 
-    public void setText1(String text1) {
+    public void setText1(@Nullable String text1) {
         config.text1 = text1;
         measureBadge();
     }
 
+    @Nullable
     public String getText1() {
         return config.text1;
     }
 
-    public void setText2(String text2) {
+    public void setText2(@Nullable String text2) {
         config.text2 = text2;
         measureBadge();
     }
 
+    @Nullable
     public String getText2() {
         return config.text2;
     }
@@ -227,6 +255,16 @@ public class BadgeDrawable extends Drawable {
         return config.textColor;
     }
 
+    public void setTypeFace(@Nullable Typeface typeface) {
+        config.typeface = typeface;
+        paint.setTypeface(config.typeface);
+    }
+
+    @Nullable
+    public Typeface getTypeFace() {
+        return config.typeface;
+    }
+
     public void setCornerRadius(float radius) {
         config.cornerRadius = radius;
         outerR[0] = outerR[1] = outerR[2] = outerR[3] =
@@ -239,6 +277,10 @@ public class BadgeDrawable extends Drawable {
         outerROfText2[2] = outerROfText2[3] = outerROfText2[4] = outerROfText2[5] = radius;
     }
 
+    public float getCornerRadius() {
+        return config.cornerRadius;
+    }
+
     public void setPadding(float l, float t, float r, float b, float c) {
         config.paddingLeft = l;
         config.paddingTop = t;
@@ -248,51 +290,105 @@ public class BadgeDrawable extends Drawable {
         measureBadge();
     }
 
+    public void setPaddingLeft(float l) {
+        config.paddingLeft = l;
+        measureBadge();
+    }
+
+    public float getPaddingLeft() {
+        return config.paddingLeft;
+    }
+
+    public void setPaddingTop(float t) {
+        config.paddingTop = t;
+        measureBadge();
+    }
+
+    public float getPaddingTop() {
+        return config.paddingTop;
+    }
+
+    public void setPaddingRight(float r) {
+        config.paddingRight = r;
+        measureBadge();
+    }
+
+    public float getPaddingRight() {
+        return config.paddingRight;
+    }
+
+    public void setPaddingBottom(float b) {
+        config.paddingBottom = b;
+        measureBadge();
+    }
+
+    public float getPaddingBottom() {
+        return config.paddingBottom;
+    }
+
+    public void setPaddingCenter(float c) {
+        config.paddingCenter = c;
+        measureBadge();
+    }
+
+    public float getPaddingCenter() {
+        return config.paddingCenter;
+    }
+
     public void setStrokeWidth(int width) {
         config.strokeWidth = width;
     }
 
+    public int getStrokeWidth() {
+        return config.strokeWidth;
+    }
+
     private void measureBadge() {
-        badgeHeight = (int) (config.textSize + config.paddingTop + config.paddingBottom);
+        badgeHeight = (int) (getTextSize() + getPaddingTop() + getPaddingBottom());
 
-        switch (config.badgeType) {
+        String text1 = getText1(), text2 = getText2();
+        text1 = (text1 != null ? text1 : "");
+        text2 = (text2 != null ? text2 : "");
+
+        switch (getBadgeType()) {
             case TYPE_ONLY_ONE_TEXT:
-                text1Width = (int) paint.measureText(config.text1);
-                badgeWidth = (int) (text1Width + config.paddingLeft + config.paddingRight);
+                text1Width = (int) paint.measureText(text1);
+                badgeWidth = (int) (text1Width + getPaddingLeft() + getPaddingRight());
 
-                setCornerRadius(config.cornerRadius);
+                setCornerRadius(getCornerRadius());
                 break;
 
             case TYPE_WITH_TWO_TEXT:
-                text1Width = (int) paint.measureText(config.text1);
-                text2Width = (int) paint.measureText(config.text2);
+                text1Width = (int) paint.measureText(text1);
+                text2Width = (int) paint.measureText(text2);
                 badgeWidth = (int) (text1Width + text2Width +
-                        config.paddingLeft + config.paddingRight + config.paddingCenter);
+                        getPaddingLeft() + getPaddingRight() + getPaddingCenter());
 
-                setCornerRadius(config.cornerRadius);
+                setCornerRadius(getCornerRadius());
                 break;
 
             case TYPE_WITH_TWO_TEXT_COMPLEMENTARY:
-                text1Width = (int) paint.measureText(config.text1);
-                text2Width = (int) paint.measureText(config.text2);
+                text1Width = (int) paint.measureText(text1);
+                text2Width = (int) paint.measureText(text2);
                 badgeWidth = (int) (text1Width + text2Width +
-                        config.paddingLeft + config.paddingRight + config.paddingCenter);
+                        getPaddingLeft() + getPaddingRight() + getPaddingCenter());
 
-                setCornerRadius(config.cornerRadius);
+                setCornerRadius(getCornerRadius());
                 break;
 
+            case TYPE_NUMBER:
             default:
-                badgeWidth = (int) (config.textSize + config.paddingLeft + config.paddingRight);
+                badgeWidth = (int) (getTextSize() + getPaddingLeft() + getPaddingRight());
                 setCornerRadius(badgeHeight);
         }
 
         int boundsWidth = getBounds().width();
         if (boundsWidth > 0) {
             // If the bounds has been set, adjust the badge size
-            switch (config.badgeType) {
+            switch (getBadgeType()) {
                 case TYPE_ONLY_ONE_TEXT:
                     if(boundsWidth < badgeWidth) {
-                        text1Width = (int) (boundsWidth - config.paddingLeft - config.paddingRight);
+                        text1Width = (int) (boundsWidth - getPaddingLeft() - getPaddingRight());
                         text1Width = text1Width > 0 ? text1Width : 0;
 
                         badgeWidth = boundsWidth;
@@ -302,20 +398,23 @@ public class BadgeDrawable extends Drawable {
                 case TYPE_WITH_TWO_TEXT:
                 case TYPE_WITH_TWO_TEXT_COMPLEMENTARY:
                     if(boundsWidth < badgeWidth) {
-                        if (boundsWidth < (text1Width + config.paddingLeft + config.paddingRight)) {
-                            text1Width = (int) (boundsWidth - config.paddingLeft - config.paddingRight);
+                        if (boundsWidth < (text1Width + getPaddingLeft() + getPaddingRight())) {
+                            text1Width = (int) (boundsWidth - getPaddingLeft() - getPaddingRight());
                             text1Width = text1Width > 0 ? text1Width : 0;
                             text2Width = 0;
 
                         } else {
                             text2Width = (int) (boundsWidth - text1Width -
-                                    config.paddingLeft - config.paddingRight - config.paddingCenter);
+                                    getPaddingLeft() - getPaddingRight() - getPaddingCenter());
                             text2Width = text2Width > 0 ? text2Width : 0;
                         }
 
                         badgeWidth = boundsWidth;
                     }
                     break;
+
+                case TYPE_NUMBER:
+                default:
             }
         }
     }
@@ -338,85 +437,90 @@ public class BadgeDrawable extends Drawable {
                 bounds.top + marginTopAndBottom,
                 bounds.right - marginLeftAndRight,
                 bounds.bottom - marginTopAndBottom);
-        backgroundDrawable.getPaint().setColor(config.badgeColor);
+        backgroundDrawable.getPaint().setColor(getBadgeColor());
         backgroundDrawable.draw(canvas);
 
         float textCx = bounds.centerX();
         float textCy = bounds.centerY() - (fontMetrics.bottom + fontMetrics.top) / 2f;
 
-        switch (config.badgeType) {
+        String text1 = getText1(), text2 = getText2();
+        text1 = (text1 != null ? text1 : "");
+        text2 = (text2 != null ? text2 : "");
+
+        switch (getBadgeType()) {
             case TYPE_ONLY_ONE_TEXT:
-                paint.setColor(config.textColor);
+                paint.setColor(getTextColor());
                 canvas.drawText(
-                        cutText(config.text1, text1Width),
+                        cutText(text1, text1Width),
                         textCx,
                         textCy,
                         paint);
                 break;
 
             case TYPE_WITH_TWO_TEXT_COMPLEMENTARY:
-                paint.setColor(config.textColor);
+                paint.setColor(getTextColor());
                 canvas.drawText(
-                        config.text1,
-                        marginLeftAndRight + config.paddingLeft + text1Width / 2f,
+                        text1,
+                        marginLeftAndRight + getPaddingLeft() + text1Width / 2f,
                         textCy,
                         paint);
 
                 backgroundDrawableOfText2.setBounds(
-                        (int) (bounds.left + marginLeftAndRight + config.paddingLeft +
-                                text1Width + config.paddingCenter / 2f),
-                        bounds.top + marginTopAndBottom+ config.strokeWidth,
-                        bounds.width() - marginLeftAndRight - config.strokeWidth,
-                        bounds.bottom - marginTopAndBottom - config.strokeWidth);
-                backgroundDrawableOfText2.getPaint().setColor(config.textColor);
+                        (int) (bounds.left + marginLeftAndRight + getPaddingLeft() +
+                                text1Width + getPaddingCenter() / 2f),
+                        bounds.top + marginTopAndBottom+ getStrokeWidth(),
+                        bounds.width() - marginLeftAndRight - getStrokeWidth(),
+                        bounds.bottom - marginTopAndBottom - getStrokeWidth());
+                backgroundDrawableOfText2.getPaint().setColor(getTextColor());
                 backgroundDrawableOfText2.draw(canvas);
 
-                paint.setColor(config.badgeColor);
+                paint.setColor(getBadgeColor());
                 canvas.drawText(
-                        cutText(config.text2, text2Width),
-                        bounds.width() - marginLeftAndRight - config.paddingRight - text2Width / 2f,
+                        cutText(text2, text2Width),
+                        bounds.width() - marginLeftAndRight - getPaddingRight() - text2Width / 2f,
                         textCy,
                         paint);
                 break;
 
             case TYPE_WITH_TWO_TEXT:
                 backgroundDrawableOfText1.setBounds(
-                        bounds.left + marginLeftAndRight + config.strokeWidth,
-                        bounds.top + marginTopAndBottom+ config.strokeWidth,
-                        (int) (bounds.left + marginLeftAndRight + config.paddingLeft +
-                                text1Width + config.paddingCenter / 2f - config.strokeWidth / 2f),
-                        bounds.bottom - marginTopAndBottom - config.strokeWidth);
+                        bounds.left + marginLeftAndRight + getStrokeWidth(),
+                        bounds.top + marginTopAndBottom+ getStrokeWidth(),
+                        (int) (bounds.left + marginLeftAndRight + getPaddingLeft() +
+                                text1Width + getPaddingCenter() / 2f - getStrokeWidth() / 2f),
+                        bounds.bottom - marginTopAndBottom - getStrokeWidth());
                 backgroundDrawableOfText1.getPaint().setColor(0xffFFFFFF);
                 backgroundDrawableOfText1.draw(canvas);
 
-                paint.setColor(config.badgeColor);
+                paint.setColor(getBadgeColor());
                 canvas.drawText(
-                        config.text1,
-                        text1Width / 2f + marginLeftAndRight + config.paddingLeft,
+                        text1,
+                        text1Width / 2f + marginLeftAndRight + getPaddingLeft(),
                         textCy,
                         paint);
 
                 backgroundDrawableOfText2.setBounds(
-                        (int) (bounds.left + marginLeftAndRight + config.paddingLeft +
-                                text1Width + config.paddingCenter / 2f + config.strokeWidth / 2f),
-                        bounds.top + marginTopAndBottom + config.strokeWidth,
-                        bounds.width() - marginLeftAndRight - config.strokeWidth,
-                        bounds.bottom - marginTopAndBottom - config.strokeWidth);
+                        (int) (bounds.left + marginLeftAndRight + getPaddingLeft() +
+                                text1Width + getPaddingCenter() / 2f + getStrokeWidth() / 2f),
+                        bounds.top + marginTopAndBottom + getStrokeWidth(),
+                        bounds.width() - marginLeftAndRight - getStrokeWidth(),
+                        bounds.bottom - marginTopAndBottom - getStrokeWidth());
                 backgroundDrawableOfText2.getPaint().setColor(0xffFFFFFF);
                 backgroundDrawableOfText2.draw(canvas);
 
-                paint.setColor(config.badgeColor);
+                paint.setColor(getBadgeColor());
                 canvas.drawText(
-                        cutText(config.text2, text2Width),
-                        bounds.width() - marginLeftAndRight - config.paddingRight - text2Width / 2f,
+                        cutText(text2, text2Width),
+                        bounds.width() - marginLeftAndRight - getPaddingRight() - text2Width / 2f,
                         textCy,
                         paint);
                 break;
 
+            case TYPE_NUMBER:
             default:
-                paint.setColor(config.textColor);
+                paint.setColor(getTextColor());
                 canvas.drawText(
-                        cutNumber(config.number, badgeWidth),
+                        cutNumber(getNumber(), badgeWidth),
                         textCx,
                         textCy,
                         paint);
