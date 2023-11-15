@@ -1,4 +1,4 @@
-# Badge
+# #Badge
 [![Apache 2.0 License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0.html) [![Release](https://jitpack.io/v/nekocode/Badge.svg)](https://jitpack.io/#nekocode/Badge)
 
 ### Preview
